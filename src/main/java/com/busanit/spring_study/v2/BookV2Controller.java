@@ -1,4 +1,4 @@
-package com.busanit.spring_study.db;
+package com.busanit.spring_study.v2;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
