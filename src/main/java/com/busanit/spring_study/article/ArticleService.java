@@ -93,13 +93,18 @@ public class ArticleService {
         }
     }
 
-    // 쿼리 메서드 생성
+    // 쿼리 메서드 사용
     public List<ArticleDTO> getArticleByAuthor(String author) {
-        return articleRepository.findByAuthor(author);
+        List<Article> articleList = articleRepository.findByAuthor(author);
+        return articleList.stream().map(Article::toDTO).toList();
+
     }
 
     public List<ArticleDTO> getArticleByTitleContaining(String title) {
-        return articleRepository.findByTitleContaining(title);
+        List<Article> articleList = articleRepository.findByTitleContaining(title);
+        return articleList.stream().map(Article::toDTO).toList();
     }
+
+
 
 }

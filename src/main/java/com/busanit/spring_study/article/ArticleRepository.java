@@ -3,11 +3,11 @@ package com.busanit.spring_study.article;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@RequestMapping
+@Repository
 public interface ArticleRepository extends JpaRepository<Article, Long> {
     // 커스텀 메서드
     // 1. 기본 쿼리 메서드

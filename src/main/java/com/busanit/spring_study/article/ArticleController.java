@@ -36,9 +36,8 @@ public class ArticleController {
 
         if(article == null) {
             return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(article);
         }
+        return ResponseEntity.ok(article);
     }
 
     // UPDATE
@@ -47,20 +46,18 @@ public class ArticleController {
         ArticleDTO article = articleService.updateArticle(id, updateArticle);
         if(article == null) {
             return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(article);
         }
+            return ResponseEntity.ok(article);
+
     }
 
     // DELETE
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteArticle(@PathVariable Long id) {
-        boolean isDeletedArticle = articleService.DeleteArticle(id);
-        if(!isDeletedArticle) {
+        if(!articleService.DeleteArticle(id)) {
             return ResponseEntity.notFound().build();
-        }else {
-            return ResponseEntity.ok().build();
         }
+            return ResponseEntity.ok().build();
     }
 
     // 커스텀 쿼리 요청

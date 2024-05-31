@@ -26,11 +26,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'	// 뷰 템플릿(mustache)
 	implementation 'org.springframework.boot:spring-boot-starter-web'		// WebServer 등
 
+    runtimeOnly 'com.h2database:h2'						//  In-Memory Database (경량 관계형 DB)
+    runtimeOnly 'com.mysql:mysql-connector-j'			// MySQL 접속 커넥터
+
 	// 롬복 : 반복되는 코드 작성을 줄이는 것을 돕는 라이브러리
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'						//  In-Memory Database (경량 관계형 DB)
-	runtimeOnly 'com.mysql:mysql-connector-j'			// MySQL 접속 커넥터
 	annotationProcessor 'org.projectlombok:lombok'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
