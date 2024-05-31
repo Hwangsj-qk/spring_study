@@ -27,7 +27,8 @@ public class CommentService {
 
     // 조회 (일부 기사)
     public CommentDTO getCommentById(Long id) {
-        return commentRepository.findById(id).orElse(null).toDTO();
+        Comment comment = commentRepository.findById(id).orElse(null);
+        return comment.toDTO();
     }
 
     // 생성
@@ -41,8 +42,10 @@ public class CommentService {
 
         // DTO -> 엔티티 변환 (양자 택일)
         // 1. 생성 메서드 사용 DTO -> 엔티티 반환
-        Comment comment = Comment.createComment(dto);
+        //Comment comment = Comment.createComment(dto);
         // 2. toEntity 사용 변환
+        Comment comment = dto.toEntity(article);
+
         Comment saved = commentRepository.save(comment);
         return saved.toDTO();
     }
@@ -51,6 +54,7 @@ public class CommentService {
     @Transactional
     public CommentDTO updateComment(Long id, Comment updateComment) {
         Comment comment = commentRepository.findById(id).orElse(null);
+
         if(comment != null) {
             if(updateComment.getContent() != null) {
                 comment.setContent(updateComment.getContent());
@@ -58,10 +62,9 @@ public class CommentService {
             if(updateComment.getAuthor() != null) {
                 comment.setAuthor(updateComment.getContent());
             }
-            if(updateComment.getAuthor() != null) {
-                comment.setAuthor(updateComment.getAuthor());
-            }
-            return commentRepository.save(comment).toDTO();
+            // 댓글의 게시글까지 변경하고 싶은 경우(로직 추가)
+            Comment saved = commentRepository.save(comment);
+            return saved.toDTO();
         } else {
             return null;
         }
@@ -70,9 +73,9 @@ public class CommentService {
     // 삭제
     @Transactional
     public Boolean deleteComment(Long id) {
-        Comment comment = commentRepository.findById(id).orElse(null);
-        if(comment != null) {
-            commentRepository.delete(comment);
+        Comment article = commentRepository.findById(id).orElse(null);
+        if(article != null) {
+            commentRepository.delete(article);
             return true;
         } else {
             return false;

@@ -45,6 +45,7 @@ public class ArticleService {
     // 조회 (일부 기사)
     public ArticleDTO getArticleById(Long id) {
         Article article = articleRepository.findById(id).orElse(null);
+        // DTO로 변환
         if(article != null) {
             return article.toDTO();
         }else {
@@ -91,4 +92,14 @@ public class ArticleService {
             return false;
         }
     }
+
+    // 쿼리 메서드 생성
+    public List<ArticleDTO> getArticleByAuthor(String author) {
+        return articleRepository.findByAuthor(author);
+    }
+
+    public List<ArticleDTO> getArticleByTitleContaining(String title) {
+        return articleRepository.findByTitleContaining(title);
+    }
+
 }

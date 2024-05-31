@@ -1,6 +1,6 @@
 package com.busanit.spring_study.article;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,22 +9,24 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/articles")
+@RequiredArgsConstructor
 public class ArticleController {
-    @Autowired
-    private ArticleService articleService;
+
+    // @Autowired
+    final private ArticleService articleService;
 
     // INSERT
     @PostMapping
     public ResponseEntity<ArticleDTO> createArticle (@RequestBody ArticleDTO article) {
-        ArticleDTO createArticle = articleService.createArticle(article);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createArticle);
+        ArticleDTO createdArticle = articleService.createArticle(article);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdArticle);
     }
 
     // SELECT (전체 데이터)
     @GetMapping
-    public List<ArticleDTO> getAllArticles() {
-        List<ArticleDTO> aritcles = articleService.getAllArticles();
-        return articleService.getAllArticles();
+    public ResponseEntity<List<ArticleDTO>> getAllArticles() {
+        List<ArticleDTO> articles = articleService.getAllArticles();
+        return ResponseEntity.ok(articles);
     }
 
     // SELECT (일부)
@@ -60,4 +62,16 @@ public class ArticleController {
             return ResponseEntity.ok().build();
         }
     }
+
+    // 커스텀 쿼리 요청
+    @GetMapping("/title/{title}")
+    public List<ArticleDTO> getArticleByTitleContaining(@PathVariable String title) {
+        return articleService.getArticleByTitleContaining(title);
+    }
+
+    @GetMapping("/author/{author}")
+    public List<ArticleDTO> getArticleByAuthor(@PathVariable String author) {
+        return articleService.getArticleByAuthor(author);
+    }
 }
+

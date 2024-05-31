@@ -26,14 +26,16 @@ public class Comment {
     // 게시글과 댓글 관계에서 댓글은 Many에 해당 => Many to One
     @ManyToOne      // 관계설정
     @JoinColumn(name = "article_id")        // 외래키로 사용될 컬럼 이름
+    // @JoinColumn(name = "article_id", nullable = false)  // 외래키 Not Null 지정
     private Article article;
 
     // 엔티티 -> DTO 변환 메서드
     public CommentDTO toDTO() {
+        Long articleId = 0L;
         if(article.getId() == null) {
-
+            articleId = article.getId();
         }
-        return new CommentDTO(id, content, author, article.getId());
+        return new CommentDTO(id, content, author, articleId);
     }
 
     // DTO -> 엔티티 변환 메서드(생성 메서드)
@@ -41,6 +43,7 @@ public class Comment {
         Comment comment = new Comment();
         comment.setContent(dto.getContent());
         comment.setAuthor(dto.getAuthor());
+
         Article article = new Article();
         article.setId(dto.getArticleId());
         comment.setArticle(article);

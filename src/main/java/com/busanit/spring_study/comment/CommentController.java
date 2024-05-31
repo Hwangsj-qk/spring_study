@@ -21,12 +21,12 @@ public class CommentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<Comment>> getCommentById(@PathVariable Long id) {
+    public ResponseEntity<CommentDTO> getCommentById(@PathVariable Long id) {
         CommentDTO comment = commentService.getCommentById(id);
         if(comment == null ) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(comment);
         }
     }
 
