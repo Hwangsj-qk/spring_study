@@ -3,6 +3,7 @@ package com.busanit.spring_study.article;
 import com.busanit.spring_study.comment.CommentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -103,6 +104,22 @@ public class ArticleService {
     public List<ArticleDTO> getArticleByTitleContaining(String title) {
         List<Article> articleList = articleRepository.findByTitleContaining(title);
         return articleList.stream().map(Article::toDTO).toList();
+    }
+
+    public Page<ArticleDTO> getArticles(int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Article> articles = articleRepository.findAll(pageable);
+        List<ArticleDTO>list = articles.stream().map(article -> article.toDTO()).toList();
+        Page<ArticleDTO>articleDTOs = new PageImpl<>(list, pageable, articles.getTotalElements());
+        return articleDTOs;
+    }
+
+    public Page<ArticleDTO> getArticleByAuthor(String author, int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Article> articles = articleRepository.findByAuthor(author, pageable);
+        List<ArticleDTO> list = articles.stream().map(article -> article.toDTO()).toList();
+        Page<ArticleDTO> articleDTOs = new PageImpl<>(list, pageable, articles.getTotalElements());
+        return articleDTOs;
     }
 
 

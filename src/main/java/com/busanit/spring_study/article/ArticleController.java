@@ -1,6 +1,7 @@
 package com.busanit.spring_study.article;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -70,5 +71,27 @@ public class ArticleController {
     public List<ArticleDTO> getArticleByAuthor(@PathVariable String author) {
         return articleService.getArticleByAuthor(author);
     }
+
+    // 게시글 페이징, 정렬된 상태로 조회하기
+    @GetMapping("/page")
+    public Page<ArticleDTO> getArticles(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy) {
+        Page<ArticleDTO> articles = articleService.getArticles(page, size, sortBy);
+        return articles;
+    }
+
+    // 특정 저자와 게시글 페이징, 정렬된 상태로 조회
+    @GetMapping("/author")
+    public Page<ArticleDTO> getArticlesByAuthor(
+            @RequestParam String author,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy) {
+        Page<ArticleDTO> articles = articleService.getArticleByAuthor(author, page, size, sortBy);
+        return articles;
+    }
+
 }
 
