@@ -107,14 +107,20 @@ public class ArticleService {
     }
 
     public Page<ArticleDTO> getArticles(int page, int size, String sortBy) {
+        // PageRequest.of 를 사용하여 페이지, 사이즈, 정렬 정보가 포함된 Pageable 객체 생성
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        // 레포지토리에서 데이터를 조회(Pageable 객체를 매개변수로 사용) => Page<T> 객체를 반환
         Page<Article> articles = articleRepository.findAll(pageable);
+        // Entity -> DTO (리스트)
         List<ArticleDTO>list = articles.stream().map(article -> article.toDTO()).toList();
+        // Entity -> Page (Page 객체)
         Page<ArticleDTO>articleDTOs = new PageImpl<>(list, pageable, articles.getTotalElements());
+        // Page<DTO>를 컨트롤러에 전달
         return articleDTOs;
     }
 
     public Page<ArticleDTO> getArticleByAuthor(String author, int page, int size, String sortBy) {
+
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         Page<Article> articles = articleRepository.findByAuthor(author, pageable);
         List<ArticleDTO> list = articles.stream().map(article -> article.toDTO()).toList();

@@ -35,7 +35,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     // 제목에 특정 문자가 포함되는 경우 쿼리
     List<Article> findByTitleContaining(String title);
 
-    @Query("SELECT a FROM Article WHERE a.title LIKE %:title%")
+    @Query("SELECT a FROM Article a WHERE a.title LIKE %:title%")
     List<Article> findByTitleContainingJPQL(@Param("title") String title);
 
     @Query(value = "SELECT * FROM article WHERE title LIKE %:title%", nativeQuery = true)

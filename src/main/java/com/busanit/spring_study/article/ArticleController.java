@@ -75,9 +75,11 @@ public class ArticleController {
     // 게시글 페이징, 정렬된 상태로 조회하기
     @GetMapping("/page")
     public Page<ArticleDTO> getArticles(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy) {
+            // 쿼리 매개변수로 데이터를 전달받고, 기본값을 설정
+            @RequestParam(defaultValue = "0") int page,         // 페이지 번호 : 기본값 첫번째
+            @RequestParam(defaultValue = "10") int size,        // 페이지 크기 : 10개
+            @RequestParam(defaultValue = "id") String sortBy) {     // 정렬기준 컬럼: 기본값 ID
+        // 서비스 계층에서 DTO를 받아서 클라이언트에 전달
         Page<ArticleDTO> articles = articleService.getArticles(page, size, sortBy);
         return articles;
     }
@@ -86,7 +88,7 @@ public class ArticleController {
     @GetMapping("/author")
     public Page<ArticleDTO> getArticlesByAuthor(
             @RequestParam String author,
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "0") int page,     // 기본값 지정
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy) {
         Page<ArticleDTO> articles = articleService.getArticleByAuthor(author, page, size, sortBy);
